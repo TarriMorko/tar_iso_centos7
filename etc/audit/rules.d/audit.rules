@@ -1,0 +1,18 @@
+## First rule - delete all
+-D
+
+## Increase the buffers to survive stress events.
+## Make this bigger for busy systems
+-b 8192
+
+## Set failure mode to syslog
+-f 1
+
+# Feel free to add below this line. See auditctl man page
+-w /aulog/ -k LOG_audit -p wa
+-w /etc/audit/auditd.conf -k CFG_audit_conf -p wa
+-w /etc/audit/audit.rules -k CFG_audit_rules -p wa
+-w /etc/passwd -k CFG_passwd -p wa
+-w /etc/group -k CFG_group -p wa
+-w /etc/sysconfig/ -k CFG_sysconfig -p wa
+-w /etc/security/ -k CFG_security -p wa
