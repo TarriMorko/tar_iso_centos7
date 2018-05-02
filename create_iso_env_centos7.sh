@@ -46,18 +46,18 @@ authconfig --enablemkhomedir \
     --enablereqother \
     --update
 
-
-# TODO:  # 我需要一台新的 cetnos7 來看原本的 sshd_config 設定
 # sshd  
 sed -i 's/#UseDNS yes/UseDNS no/g' /etc/ssh/sshd_config
+sed -i 's/#PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
 sed -i 's/GSSAPIAuthentication yes/GSSAPIAuthentication no/g' /etc/ssh/sshd_config
+echo "AllowUsers      spadmin spos1 spos2 spos3 spos4 opusr" >> /etc/ssh/sshd_config
 service sshd restart
 
 
 
 
 ##############
-tar -xvpPf /tmp/tar_iso_suse12.tar
+tar -xvpPf /tmp/tar_iso_centos7.tar
 chmod 644 /etc/cron.allow /etc/issue /etc/issue.net /etc/login.defs
 chmod 644 /etc/profile.local /etc/profile /etc/services
 chmod 644 /etc/pam.d/common-auth-pc
