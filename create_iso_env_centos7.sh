@@ -28,7 +28,9 @@ cp -p /etc/services /etc/services.bak
 cp -p /etc/rsyslog.conf /etc/rsyslog.conf.bak
 cp -p /etc/pam.d/sshd /etc/pam.d/sshd.bak
 cp -p /etc/ssh/sshd_config /etc/ssh/sshd_config.bak
-authconfig --savebackup=/etc/pam.d/backup
+
+
+authconfig --savebackup=/tmp/Hardening/pam_backup
 
 
 ## Hardening Account
@@ -39,23 +41,21 @@ rm /etc/passwd.tmp
 
 
 # authconfig
-authconfig --enablemkhomedir \
-    --enableshadow \
-    --passalgo=sha512 \
-    --passminlen=8 \
-    --enablereqdigit \
-    --enablereqother \
-    --update
 
 
 ##############
 tar -xvpPf /tmp/Hardening/tar_iso_centos7.tar
 chmod 644 /etc/cron.allow /etc/issue /etc/issue.net /etc/login.defs
-chmod 644 /etc/profile.local /etc/services
+chmod 644 /etc/profile.d/local.sh /etc/services
 chmod 644 /root/.profile
 chmod 640 /etc/audit/audit.rules /etc/audit/auditd.conf /etc/ssh/sshd_config
 chmod 600 /etc/rsyslog.conf
 chmod 660 /etc/sudoers
+chmod 644 /etc/pam.d/system-auth-ac
+chmod 644 /etc/pam.d/password-auth-ac
+chmod 644 /etc/security/pwquality.conf
+chmod 644 /etc/pam.d/passwd
+
 
 systemctl restart sshd.service
 systemctl restart rsyslog.service
