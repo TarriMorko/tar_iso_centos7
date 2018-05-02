@@ -27,7 +27,7 @@ cp -p /etc/profile /etc/profile.bak
 cp -p /etc/services /etc/services.bak
 cp -p /etc/rsyslog.conf /etc/rsyslog.conf.bak
 cp -p /etc/pam.d/sshd /etc/pam.d/sshd.bak
-authconfig --savebackup=/tmp/Hardening
+authconfig --savebackup=/etc/pam.d/backup
 
 
 ## Hardening Account
@@ -54,7 +54,7 @@ echo "AllowUsers      spadmin spos1 spos2 spos3 spos4 opusr" >> /etc/ssh/sshd_co
 
 
 ##############
-tar -xvpPf /tmp/tar_iso_centos7.tar
+tar -xvpPf /tmp/Hardening/tar_iso_centos7.tar
 chmod 644 /etc/cron.allow /etc/issue /etc/issue.net /etc/login.defs
 chmod 644 /etc/profile.local /etc/services
 chmod 644 /root/.profile
