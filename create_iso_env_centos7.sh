@@ -51,16 +51,12 @@ sed -i 's/#UseDNS yes/UseDNS no/g' /etc/ssh/sshd_config
 sed -i 's/#PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
 sed -i 's/GSSAPIAuthentication yes/GSSAPIAuthentication no/g' /etc/ssh/sshd_config
 echo "AllowUsers      spadmin spos1 spos2 spos3 spos4 opusr" >> /etc/ssh/sshd_config
-service sshd restart
-
-
 
 
 ##############
 tar -xvpPf /tmp/tar_iso_centos7.tar
 chmod 644 /etc/cron.allow /etc/issue /etc/issue.net /etc/login.defs
-chmod 644 /etc/profile.local /etc/profile /etc/services
-chmod 644 /etc/pam.d/common-auth-pc
+chmod 644 /etc/profile.local /etc/services
 chmod 644 /root/.profile
 chmod 640 /etc/audit/audit.rules /etc/audit/auditd.conf /etc/ssh/sshd_config
 chmod 600 /etc/rsyslog.conf
