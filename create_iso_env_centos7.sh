@@ -27,6 +27,7 @@ cp -p /etc/profile /etc/profile.bak
 cp -p /etc/services /etc/services.bak
 cp -p /etc/rsyslog.conf /etc/rsyslog.conf.bak
 cp -p /etc/pam.d/sshd /etc/pam.d/sshd.bak
+cp -p /etc/ssh/sshd_config /etc/ssh/sshd_config.bak
 authconfig --savebackup=/etc/pam.d/backup
 
 
@@ -45,12 +46,6 @@ authconfig --enablemkhomedir \
     --enablereqdigit \
     --enablereqother \
     --update
-
-# sshd  
-sed -i 's/#UseDNS yes/UseDNS no/g' /etc/ssh/sshd_config
-sed -i 's/#PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
-sed -i 's/GSSAPIAuthentication yes/GSSAPIAuthentication no/g' /etc/ssh/sshd_config
-echo "AllowUsers      spadmin spos1 spos2 spos3 spos4 opusr" >> /etc/ssh/sshd_config
 
 
 ##############
