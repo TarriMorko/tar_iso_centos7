@@ -21,17 +21,15 @@ echo "Warnning !! This script should not run twice !!."
 cp -p /etc/issue /etc/issue.bak
 cp -p /etc/issue.net  /etc/issue.net.bak
 cp -p /etc/login.defs  /etc/login.defs.bak
-cp -p /etc/passwd /etc/passwd.bak
+cp -p /etc/security/pwquality.conf /etc/security/pwquality.conf.bak
 cp -p /etc/audit/auditd.conf /etc/audit/auditd.conf.bak
 cp -p /etc/profile /etc/profile.bak
 cp -p /etc/services /etc/services.bak
 cp -p /etc/rsyslog.conf /etc/rsyslog.conf.bak
-cp -p /etc/pam.d/sshd /etc/pam.d/sshd.bak
 cp -p /etc/ssh/sshd_config /etc/ssh/sshd_config.bak
 
 
 authconfig --savebackup=/tmp/Hardening/pam_backup
-
 
 ## Hardening Account
 sed s/bash/false/g /etc/passwd | grep -v root  > /etc/passwd.tmp
@@ -45,16 +43,19 @@ rm /etc/passwd.tmp
 
 ##############
 tar -xvpPf /tmp/Hardening/tar_iso_centos7.tar
+ln -sf /etc/pam.d/system-auth-tcb /etc/pam.d/system-auth
+ln -sf /etc/pam.d/password-auth-tcb /etc/pam.d/password-auth
+
 chmod 644 /etc/cron.allow /etc/issue /etc/issue.net /etc/login.defs
 chmod 644 /etc/profile.d/local.sh /etc/services
 chmod 644 /root/.profile
 chmod 640 /etc/audit/audit.rules /etc/audit/auditd.conf /etc/ssh/sshd_config
 chmod 600 /etc/rsyslog.conf
 chmod 660 /etc/sudoers
-chmod 644 /etc/pam.d/system-auth-ac
-chmod 644 /etc/pam.d/password-auth-ac
+chmod 644 /etc/pam.d/system-auth-tcb
+chmod 644 /etc/pam.d/password-auth-tcb
 chmod 644 /etc/security/pwquality.conf
-chmod 644 /etc/pam.d/passwd
+
 
 
 systemctl restart sshd.service
