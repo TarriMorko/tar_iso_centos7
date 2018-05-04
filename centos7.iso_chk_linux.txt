@@ -1,0 +1,594 @@
+############################
+# LINUX系統強化檢核表附件  #
+#        第一次強化        #
+############################
+  
+Hostname: centos7
+  
+1-1 登錄畫面的welcome message是否含有系統資訊？
+==================================
+ cat /etc/issue
+
+TCB's internal systems must only be used for conducting TCB's business or for purposes authorized by TCB management
+
+
+----------------------------------
+cat /etc/issue.net
+TCB's internal systems must only be used for conducting TCB's business or for purposes authorized by TCB management
+----------------------------------
+  
+  
+2-1 確認密碼品質依管理要點設定？
+==================================
+ cat /etc/login.defs|grep PASS_MAX_DAYS
+PASS_MAX_DAYS	28
+---------   ----------  ----------- 
+cat /etc/pam.d/system-auth-ac | grep remember
+----------------------------------
+cat /etc/security/pwquality.conf | grep ^minlen
+minlen = 8
+----------------------------------
+  
+  
+2-2 確認使用者帳號的可辨別性？
+==================================
+ cat /etc/passwd 
+bin:x:1:1:bin:/bin:/sbin/nologin
+daemon:x:2:2:daemon:/sbin:/sbin/nologin
+adm:x:3:4:adm:/var/adm:/sbin/nologin
+lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin
+sync:x:5:0:sync:/sbin:/bin/sync
+shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown
+halt:x:7:0:halt:/sbin:/sbin/halt
+mail:x:8:12:mail:/var/spool/mail:/sbin/nologin
+games:x:12:100:games:/usr/games:/sbin/nologin
+ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin
+nobody:x:99:99:Nobody:/:/sbin/nologin
+systemd-network:x:192:192:systemd Network Management:/:/sbin/nologin
+dbus:x:81:81:System message bus:/:/sbin/nologin
+polkitd:x:999:998:User for polkitd:/:/sbin/nologin
+abrt:x:173:173::/etc/abrt:/sbin/nologin
+libstoragemgmt:x:998:997:daemon account for libstoragemgmt:/var/run/lsm:/sbin/nologin
+rpc:x:32:32:Rpcbind Daemon:/var/lib/rpcbind:/sbin/nologin
+colord:x:997:996:User for colord:/var/lib/colord:/sbin/nologin
+saslauth:x:996:76:Saslauthd user:/run/saslauthd:/sbin/nologin
+rtkit:x:172:172:RealtimeKit:/proc:/sbin/nologin
+chrony:x:995:993::/var/lib/chrony:/sbin/nologin
+qemu:x:107:107:qemu user:/:/sbin/nologin
+rpcuser:x:29:29:RPC Service User:/var/lib/nfs:/sbin/nologin
+nfsnobody:x:65534:65534:Anonymous NFS User:/var/lib/nfs:/sbin/nologin
+tss:x:59:59:Account used by the trousers package to sandbox the tcsd daemon:/dev/null:/sbin/nologin
+usbmuxd:x:113:113:usbmuxd user:/:/sbin/nologin
+geoclue:x:994:991:User for geoclue:/var/lib/geoclue:/sbin/nologin
+radvd:x:75:75:radvd user:/:/sbin/nologin
+setroubleshoot:x:993:990::/var/lib/setroubleshoot:/sbin/nologin
+pulse:x:171:171:PulseAudio System Daemon:/var/run/pulse:/sbin/nologin
+gdm:x:42:42::/var/lib/gdm:/sbin/nologin
+pcp:x:992:987:Performance Co-Pilot:/var/lib/pcp:/sbin/nologin
+gnome-initial-setup:x:991:986::/run/gnome-initial-setup/:/sbin/nologin
+sshd:x:74:74:Privilege-separated SSH:/var/empty/sshd:/sbin/nologin
+avahi:x:70:70:Avahi mDNS/DNS-SD Stack:/var/run/avahi-daemon:/sbin/nologin
+postfix:x:89:89::/var/spool/postfix:/sbin/nologin
+postgres:x:26:26:PostgreSQL Server:/var/lib/pgsql:/bin/false
+ntp:x:38:38::/etc/ntp:/sbin/nologin
+oprofile:x:16:16:Special user account to be used by OProfile:/var/lib/oprofile:/sbin/nologin
+tcpdump:x:72:72::/:/sbin/nologin
+erwin:x:1000:1000:erwin:/home/erwin:/bin/false
+max:x:1001:1001::/home/max:/bin/false
+root:x:0:0:root:/root:/bin/bash
+operator:x:11:0:operator:/root:/sbin/nologin
+spos1:x:701:700:spos1:/home/spos1:/bin/bash
+spos2:x:702:700:spos2:/home/spos2:/bin/bash
+spos3:x:703:700:spos3:/home/spos3:/bin/bash
+spos4:x:705:700:spos4:/home/spos4:/bin/bash
+opusr:x:802:800:opusr:/home/opusr:/bin/bash
+spadmin:x:712:700:spadmin:/home/spadmin:/bin/bash
+----------------------------------
+  
+  
+2-3確認root帳號之管理是否適當？ 
+==================================
+2-3-2 確認/etc/passwd及/etc/group，root之uid及gid 
+同 2-2 /etc/passwd 檔
+----------------------------------
+ cat /etc/group  
+root:x:0:
+bin:x:1:
+daemon:x:2:
+sys:x:3:
+adm:x:4:
+tty:x:5:
+disk:x:6:
+lp:x:7:
+mem:x:8:
+kmem:x:9:
+wheel:x:10:erwin
+cdrom:x:11:
+mail:x:12:postfix
+man:x:15:
+dialout:x:18:
+floppy:x:19:
+games:x:20:
+tape:x:30:
+video:x:39:
+ftp:x:50:
+lock:x:54:
+audio:x:63:
+nobody:x:99:
+users:x:100:
+utmp:x:22:
+utempter:x:35:
+input:x:999:
+systemd-journal:x:190:
+systemd-network:x:192:
+dbus:x:81:
+polkitd:x:998:
+abrt:x:173:
+libstoragemgmt:x:997:
+rpc:x:32:
+colord:x:996:
+cgred:x:995:
+dip:x:40:
+ssh_keys:x:994:
+saslauth:x:76:
+rtkit:x:172:
+chrony:x:993:
+kvm:x:36:qemu
+qemu:x:107:
+rpcuser:x:29:
+nfsnobody:x:65534:
+tss:x:59:
+libvirt:x:992:
+usbmuxd:x:113:
+geoclue:x:991:
+radvd:x:75:
+stapusr:x:156:
+stapsys:x:157:
+stapdev:x:158:
+setroubleshoot:x:990:
+pulse-access:x:989:
+pulse-rt:x:988:
+pulse:x:171:
+gdm:x:42:
+pcp:x:987:
+gnome-initial-setup:x:986:
+sshd:x:74:
+avahi:x:70:
+slocate:x:21:
+postdrop:x:90:
+postfix:x:89:
+postgres:x:26:
+ntp:x:38:
+oprofile:x:16:
+tcpdump:x:72:
+erwin:x:1000:erwin
+max:x:1001:
+sp:x:700:
+datactrl:x:800:
+----------------------------------
+  
+2-3-3 列出/etc/passwd及/etc/group中，uid及gid為0的所有使用者
+==================================
+root:x:0:0:root:/root:/bin/bash
+----------------------------------
+  
+  
+2-4 確認不必要系統預設帳號是否移除或鎖定 
+==================================
+2-4-1 檢查/etc/passwd帳號列表，是否留有guest帳號？ 
+本系統無 GUEST 帳號。
+----------------------------------
+  
+  
+2-4-2 列示廠商使用之帳號 
+==================================
+如2-2 /etc/passwd 檔
+無廠商使用之帳號
+----------------------------------
+  
+  
+2-4-3 列示所有系統預設帳號
+==================================
+cat /etc/passwd |awk 'FS=:  {print ,}'|awk ' < 200 {print }'
+bin:x:1:1:bin:/bin:/sbin/nologin
+daemon
+adm
+lp
+sync
+shutdown
+halt
+mail
+games
+ftp
+nobody
+systemd-network
+dbus
+abrt
+rpc
+rtkit
+qemu
+rpcuser
+tss
+usbmuxd
+radvd
+pulse
+gdm
+sshd
+avahi
+postfix
+postgres
+ntp
+oprofile
+tcpdump
+root
+operator
+----------------------------------
+  
+  
+2-5 一般帳號管理
+==================================
+2-5-1,2 cat /etc/passwd 
+同 2-2 /etc/passwd 檔
+----------------------------------
+  
+  
+2-5-3 檢查是否有不需密碼即可登入的帳號 
+ 說明:LK為鎖定，PS需密碼登入，NP不需密碼登入
+ cat /etc/passwd | awk -F':' '{print }' | xargs -I {} passwd -S {} | awk '{print , }'
+bin LK
+daemon LK
+adm LK
+lp LK
+sync LK
+shutdown LK
+halt LK
+mail LK
+games LK
+ftp LK
+nobody LK
+systemd-network LK
+dbus LK
+polkitd LK
+abrt LK
+libstoragemgmt LK
+rpc LK
+colord LK
+saslauth LK
+rtkit LK
+chrony LK
+qemu LK
+rpcuser LK
+nfsnobody LK
+tss LK
+usbmuxd LK
+geoclue LK
+radvd LK
+setroubleshoot LK
+pulse LK
+gdm LK
+pcp LK
+gnome-initial-setup LK
+sshd LK
+avahi LK
+postfix LK
+postgres LK
+ntp LK
+oprofile LK
+tcpdump LK
+erwin PS
+max PS
+root PS
+operator LK
+spos1 PS
+spos2 PS
+spos3 PS
+spos4 PS
+opusr LK
+spadmin LK
+----------------------------------
+  
+2-6 確認強迫使用者未任何動作超過一定時間時，予以強迫登出？
+==================================
+cat /etc/profile.d/local.sh
+export TMOUT=900
+readonly TMOUT
+----------------------------------
+  
+  
+2-7 確認系統預設使用者帳號的umask值
+==================================
+cat /etc/login.defs |grep UMASK |grep 027
+----------------------------------
+cat /root/.profile |grep umask
+umask 027
+----------------------------------
+  
+  
+2-8 檢查root登入時是否執行非root的程式?
+==================================
+ls -l /root/.profile
+-rwx------. 1 root root 88  5月  4 22:57 /root/.profile
+export PS1=`hostname`:\$PWD\$
+set -o vi
+unalias ls
+umask 027
+export LC_ALL=zh_TW.UTF-8
+
+----------------------------------
+  
+  
+2-9 確認是否關閉不必需要登入權限的系統預設帳號
+==================================
+本系統有 adm 的系統預設帳號，但 adm 帳號已停用且不具備LoginShell。
+本系統有 bin 的系統預設帳號，但 bin 帳號已停用且不具備LoginShell。
+本系統有 daemon 的系統預設帳號，但 daemon 帳號已停用且不具備LoginShell。
+本系統無 listen 帳號。
+本系統有 lp 的系統預設帳號，但 lp 帳號已停用且不具備LoginShell。
+本系統有 nobody 的系統預設帳號，但 nobody 帳號已停用且不具備LoginShell。
+本系統無 noaccess 帳號。
+本系統無 nuucp 帳號。
+本系統無 smtp 帳號。
+本系統無 sys 帳號。
+本系統無 uucp 帳號。
+----------------------------------
+  
+  
+2-10 系統預設帳號之適當性
+==================================
+2-10-1 檢查帳號列表，是否留有guest帳號？
+本系統無 GUEST 帳號。
+----------------------------------
+  
+  
+2-10-2 列示廠商使用之帳號。
+==================================
+同2-2檢查/etc/passwd
+本系統無廠商帳號
+----------------------------------
+  
+  
+2-10-3 列示所有系統帳號。
+==================================
+bin
+daemon
+adm
+lp
+sync
+shutdown
+halt
+mail
+games
+ftp
+nobody
+systemd-network
+dbus
+abrt
+libstoragemgmt
+rpc
+colord
+saslauth
+rtkit
+chrony
+qemu
+rpcuser
+tss
+usbmuxd
+geoclue
+radvd
+setroubleshoot
+pulse
+gdm
+pcp
+gnome-initial-setup
+sshd
+avahi
+postfix
+postgres
+ntp
+oprofile
+tcpdump
+root
+operator
+spos1
+spos2
+spos3
+spos4
+opusr
+spadmin
+----------------------------------
+  
+  
+3-1 確認關閉telnet服務
+==================================
+systemctl list-units --full | grep -q telnet.service
+本系統無 telnet 服務
+  
+  
+3-2 確認啟用SSH連線伺服器？
+==================================
+netstat -an |grep 22|grep LISTEN
+tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN     
+tcp6       0      0 :::22                   :::*                    LISTEN     
+----------------------------------
+  
+  
+4-1 確認系統之稽核功能是否已經啟動？ 
+==================================
+4-1-1 systemctl status auditd.service | grep Active 
+   Active: failed (Result: exit-code) since 五 2018-05-04 23:08:04 CST; 2min 40s ago
+----------------------------------
+  
+  
+4-1-2 cat auditd.conf |grep -v "#" 
+==================================
+
+local_events = yes
+write_logs = yes
+log_file = /var/log/audit/audit.log
+log_group = root
+log_format = RAW
+flush = INCREMENTAL_ASYNC
+freq = 50
+num_logs = 5                        ## Log rotation
+max_log_file = 6
+max_log_file_action = ROTATE
+priority_boost = 4
+disp_qos = lossy
+dispatcher = /sbin/audispd
+name_format = NONE
+space_left = 75
+space_left_action = SYSLOG
+action_mail_acct = root
+admin_space_left = 50
+admin_space_left_action = SUSPEND
+disk_full_action = SUSPEND
+disk_error_action = SUSPEND
+use_libwrap = yes
+tcp_listen_queue = 5
+tcp_max_per_addr = 1
+tcp_client_max_idle = 0
+enable_krb5 = no
+krb5_principal = auditd
+distribute_network = no
+
+
+
+
+----------------------------------
+  
+  
+4-2 確認log file僅有root具有寫入權限。
+==================================
+ls -l /var/log/audit/audit.log 
+-rw-------. 1 root root 534341  5月  4 23:07 /var/log/audit/audit.log
+----------------------------------
+  
+  
+5-1 確認cron設定之適當性,及crontab file(/var/spool/cron/tabs)是否適當保護? 
+5-1-1 crontab -l |grep -v "^#"
+==================================
+----------------------------------
+  
+5-1-2 cat /etc/cron.allow
+==================================
+root
+----------------------------------
+  
+  
+6-1 確認作業系統是否已關閉不必要之網路服務(inetd) 
+==================================
+/etc/xinetd.conf
+檢查服務 finger 狀態
+#finger          79/tcp
+#finger          79/udp
+finger 服務已關閉
+----------------------------------
+  
+檢查服務 ftp 狀態
+ftp             21/sctp                 # FTP
+#ftp             21/tcp
+#ftp             21/udp          fsp fspd
+ftp 服務已啟動
+ftp 服務已關閉
+----------------------------------
+  
+檢查服務 gopher 狀態
+#gopher          70/tcp                          # Internet Gopher
+#gopher          70/udp
+gopher 服務已關閉
+----------------------------------
+  
+檢查服務 imap 狀態
+#imap            143/tcp         imap2           # Interim Mail Access Proto v2
+#imap            143/udp         imap2
+imap 服務已關閉
+----------------------------------
+  
+檢查服務 pop2 狀態
+#pop2            109/tcp         pop-2 postoffice        # POP version 2
+#pop2            109/udp         pop-2
+pop2 服務已關閉
+----------------------------------
+  
+檢查服務 talk 狀態
+talk            517/tcp                 # like tenex link, but across
+#talk            517/udp
+talk 服務已啟動
+talk 服務已關閉
+----------------------------------
+  
+檢查服務 ntalk 狀態
+ntalk           518/tcp                 #
+#ntalk           518/udp
+ntalk 服務已啟動
+ntalk 服務已關閉
+----------------------------------
+  
+檢查服務 telnet 狀態
+#telnet          23/tcp
+#telnet          23/udp
+telnet 服務已關閉
+----------------------------------
+  
+檢查服務 uucp 狀態
+uucp            540/udp                 # uucpd
+#uucp            540/tcp         uucpd           # uucp daemon
+uucp 服務已啟動
+uucp 服務已關閉
+----------------------------------
+  
+檢查服務 nfs 狀態
+#nfs             2049/tcp        nfsd shilp      # Network File System
+#nfs             2049/udp        nfsd shilp      # Network File System
+#nfs             2049/sctp       nfsd shilp      # Network File System
+nfs 服務已關閉
+----------------------------------
+  
+檢查服務 nis 狀態
+本系統未安裝 nis 服務
+----------------------------------
+  
+  
+6-2 確認只開啟必要之通訊埠及TCP/IP服務
+==================================
+檢查 rpm -q
+套件 ftp 尚未安裝
+套件 telnet 尚未安裝
+套件 shell 尚未安裝
+套件 login 尚未安裝
+套件 exec 尚未安裝
+套件 talk 尚未安裝
+套件 ntalk 尚未安裝
+套件 imap 尚未安裝
+套件 pop2 尚未安裝
+套件 pop3 尚未安裝
+套件 finger 尚未安裝
+套件 auth 尚未安裝
+----------------------------------
+  
+  
+7-1 確認目前是否已更新至修補程式之最適版本。 
+==================================
+維持半年前之最適版本
+CentOS Linux release 7.4.1708 (Core) 
+----------------------------------
+  
+  
+8-1 確認是否執行系統弱點掃描。 
+==================================
+資安科均定期執行弱點掃描
+----------------------------------
+  
+  
+9-1 主機實體之鑰匙是否已妥善保管、使用？
+==================================
+主機實體之鑰匙機房設簿登記管制
+----------------------------------
+  
+  
+9-2 確認光碟機之使用係屬適當？
+==================================
+安裝軟體、開申請單核准後進機房使用
+----------------------------------
+  
+  
