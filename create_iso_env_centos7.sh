@@ -94,3 +94,8 @@ useradd spos3 -c spos3 -g 700 -m -u 703 -s /bin/bash
 useradd spos4 -c spos4 -g 700 -m -u 705 -s /bin/bash
 useradd opusr -c opusr -g 800 -m -u 802 -s /bin/bash
 useradd spadmin -c spadmin -g 700 -m -u 712 -s /bin/bash
+
+echo "1qaz2wsx" |passwd --stdin spos1
+echo "1qaz2wsx" |passwd --stdin spos2
+echo "1qaz2wsx" |passwd --stdin spos3
+echo "1qaz2wsx" |passwd --stdin spos4
