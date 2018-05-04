@@ -1,4 +1,7 @@
-#!/bin/ksh
+#!/bin/bash
+#
+#
+
 wrkdir=/tmp/Hardening
 hname=`hostname`
 outfil=/tmp/Hardening/$hname.iso_chk_linux.txt
@@ -14,7 +17,7 @@ echo "1-1 登錄畫面的welcome message是否含有系統資訊？" >> $outfil
 echo "==================================" >> $outfil
 echo " cat /etc/issue" >> $outfil
 cat /etc/issue >> $outfil
-echo "---------   ----------  ----------- " >> $outfil
+echo "----------------------------------" >> $outfil
 echo "cat /etc/issue.net" >> $outfil
 cat /etc/issue.net >> $outfil
 echo "----------------------------------" >> $outfil
@@ -27,11 +30,11 @@ echo "==================================" >> $outfil
 echo " cat /etc/login.defs|grep PASS_MAX_DAYS"  >> $outfil
 cat /etc/login.defs|grep PASS_MAX_DAYS |grep -v "^#" >> $outfil
 echo "---------   ----------  ----------- " >> $outfil
-echo "egrep -i -o remember=[0-9] /etc/pam.d/system-auth" >> $outfil
-egrep -i -o remember=[0-9] /etc/pam.d/system-auth >> $outfil
+echo "cat /etc/pam.d/system-auth-ac | grep remember" >> $outfil
+cat /etc/pam.d/system-auth-ac | grep remember >> $outfil
 echo "----------------------------------" >> $outfil
-echo "egrep -i -o minlen=[0-9] /etc/pam.d/system-auth" >> $outfil
-egrep -i -o minlen=[0-9] /etc/pam.d/system-auth
+echo "cat /etc/security/pwquality.conf | grep ^minlen" >> $outfil
+cat /etc/security/pwquality.conf | grep ^minlen  >> $outfil
 echo "----------------------------------" >> $outfil
 echo "  " >> $outfil
 echo "  " >> $outfil
@@ -116,8 +119,8 @@ echo "  " >> $outfil
 
 echo "2-6 確認強迫使用者未任何動作超過一定時間時，予以強迫登出？" >> $outfil
 echo "==================================" >> $outfil
-echo "cat /etc/login.defs |grep LOGIN_TIMEOUT"  >> $outfil
-cat /etc/login.defs |grep LOGIN_TIMEOUT >> $outfil
+echo "cat /etc/profile.d/local.sh"  >> $outfil
+cat /etc/profile.d/local.sh >> $outfil
 echo "----------------------------------" >> $outfil
 echo "  " >> $outfil
 echo "  " >> $outfil
@@ -203,32 +206,17 @@ echo "  " >> $outfil
 
 echo "3-1 確認關閉telnet服務" >> $outfil
 echo "==================================" >> $outfil
-echo "check_services=(telnet)" >> $outfil
-check_services=(telnet)
+echo "systemctl list-units --full | grep -q telnet.service" >> $outfil
 
-for service in ${check_services[@]}; do
-    echo "檢查服務 $service 狀態"           >> $outfil
-    cat /etc/services | grep "^$service "  >> $outfil
-    service_enabled=$?
-
-    cat /etc/services | grep "^#$service " >> $outfil
-    service_disabled=$?
-
-    if [ $service_enabled -eq 0 ]; then
-        echo "$service 服務已啟動"          >> $outfil
-    fi
-
-    if [ $service_disabled -eq 0 ]; then
-        echo "$service 服務已關閉"          >> $outfil
-    fi
-
-    if [ $service_disabled -gt 0 ] && [ $service_enabled -gt 0 ]; then
-        echo "本系統無 $service 服務"       >> $outfil
-    fi
-    echo "----------------------------------" >> $outfil
-    echo "  " >> $outfil
-done
-    echo "  " >> $outfil
+systemctl list-units --full | grep -q telnet.service  >> $outfil
+has_telnet_service=$?
+if [ $has_telnet_service -eq 0 ]; then
+    echo "本系統未移除 telnet 服務。"         >> $outfil
+else
+    echo "本系統無 telnet 服務"              >> $outfil
+fi
+echo "  " >> $outfil
+echo "  " >> $outfil
 
 
 echo "3-2 確認啟用SSH連線伺服器？" >> $outfil
@@ -242,8 +230,8 @@ echo "  " >> $outfil
 
 echo "4-1 確認系統之稽核功能是否已經啟動？ "  >> $outfil
 echo "==================================" >> $outfil
-echo "4-1-1 ps -ef|grep audit |grep -v grep "  >> $outfil
-ps -ef|grep audit |grep -v grep   >> $outfil
+echo "4-1-1 systemctl status auditd.service | grep Active "  >> $outfil
+systemctl status auditd.service | grep Active   >> $outfil
 echo "----------------------------------" >> $outfil
 echo "  " >> $outfil
 echo "  " >> $outfil
@@ -308,19 +296,16 @@ for service in ${check_services[@]}; do
 done
     echo "  " >> $outfil
 
+
 echo "6-2 確認只開啟必要之通訊埠及TCP/IP服務"  >> $outfil
 echo "==================================" >> $outfil
-echo "檢查 /etc/xinetd.conf" >> $outfil
-xinetd_services=(ftp telnet shell login exec talk ntalk imap pop2 pop3 finger auth)
+echo "檢查 rpm -q" >> $outfil
+check_rpm=(ftp telnet shell login exec talk ntalk imap pop2 pop3 finger auth)
 
-for xinetd in ${xinetd_services[@]}; do
-    echo "檢查服務 $xinetd 狀態" >> $outfil
-    cat /etc/xinetd.d/$xinetd 2>/dev/null  | grep "service\|disable" >> $outfil
-    if ! [ -f /etc/xinetd.d/$xinetd ]; then
-        echo "本系統$xinetd服務已關閉，故未開啟$xinetd的通訊埠及TCP/IP服務" >> $outfil
-        echo "  " >> $outfil
-		fi
+for _rpm in ${check_rpm[@]}; do
+    rpm -q $_rpm  >> $outfil
 done
+
 echo "----------------------------------" >> $outfil
 echo "  " >> $outfil
 echo "  " >> $outfil

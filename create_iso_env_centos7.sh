@@ -74,7 +74,9 @@ systemctl disable bluetooth.service
 
 
 mkdir -p /aulog/audreport
-chmod -R 700 /aulog/audreport
+chmod -R 700 /aulog
+# chmod -R 700 /aulog/audreport
+touch /aulog/audit.log
 chmod -R 700 /root
 service auditd start
 systemctl enable auditd
