@@ -3,7 +3,9 @@
 # User changes will be destroyed the next time authconfig is run.
 auth        required      pam_env.so
 auth        required      pam_faildelay.so delay=2000000
+auth        required      pam_faillock.so preauth silent audit deny=3 unlock_time=600
 auth        sufficient    pam_unix.so nullok try_first_pass
+auth        [default=die] pam_faillock.so authfail audit deny=3 unlock_time=600
 auth        requisite     pam_succeed_if.so uid >= 1000 quiet_success
 auth        required      pam_deny.so
 
@@ -15,7 +17,6 @@ password    requisite     pam_pwquality.so try_first_pass local_users_only retry
 password    requisite     pam_pwhistory.so debug use_authtok remember=5 retry=3
 password    sufficient    pam_unix.so sha512 shadow nullok try_first_pass use_authtok
 password    required      pam_deny.so
-
 
 session     optional      pam_keyinit.so revoke
 session     required      pam_limits.so
