@@ -30,11 +30,20 @@ echo "==================================" >> $outfil
 echo " cat /etc/login.defs|grep PASS_MAX_DAYS"  >> $outfil
 cat /etc/login.defs|grep PASS_MAX_DAYS |grep -v "^#" >> $outfil
 echo "---------   ----------  ----------- " >> $outfil
-echo "cat /etc/pam.d/system-auth-ac | grep remember" >> $outfil
-cat /etc/pam.d/system-auth-ac | grep remember >> $outfil
+echo "cat /etc/pam.d/system-auth-tcb | grep remember" >> $outfil
+cat /etc/pam.d/system-auth-tcb | grep remember >> $outfil
 echo "----------------------------------" >> $outfil
 echo "cat /etc/security/pwquality.conf | grep ^minlen" >> $outfil
 cat /etc/security/pwquality.conf | grep ^minlen  >> $outfil
+echo "----------------------------------" >> $outfil
+echo "cat /etc/security/pwquality.conf | grep ^lcredit" >> $outfil
+cat /etc/security/pwquality.conf | grep ^lcredit  >> $outfil
+echo "----------------------------------" >> $outfil
+echo "cat /etc/security/pwquality.conf | grep ^ucredit" >> $outfil
+cat /etc/security/pwquality.conf | grep ^ucredit  >> $outfil
+echo "----------------------------------" >> $outfil
+echo "cat /etc/security/pwquality.conf | grep ^dcredit" >> $outfil
+cat /etc/security/pwquality.conf | grep ^dcredit  >> $outfil
 echo "----------------------------------" >> $outfil
 echo "  " >> $outfil
 echo "  " >> $outfil
@@ -157,7 +166,7 @@ for system_default_accout in ${system_default_accouts[@]}; do
     if [[ -z "$login_sh" ]]; then
         echo "本系統無 $system_default_accout 帳號。"  >> $outfil
     else
-        if 	[ "$login_sh" == "/sbin/nologin" ]; then
+        if 	[ "$login_sh" == "/sbin/nologin" -o "$login_sh" == "/bin/false" ]; then
             echo "本系統有 $system_default_accout 的系統預設帳號，但 $system_default_accout 帳號已停用且不具備LoginShell。"   >> $outfil
         else    
             echo "帳號 $system_default_accout 未停用。"  >> $outfil
@@ -245,9 +254,8 @@ echo "  " >> $outfil
 
 echo "4-2 確認log file僅有root具有寫入權限。"  >> $outfil
 echo "==================================" >> $outfil
-echo "ls -l /var/log/audit/audit.log "  >> $outfil
-ls -l /var/log/audit/audit.log  >> $outfil
-
+echo "ls -l /aulog/audit.log "  >> $outfil
+ls -l /aulog/audit.log  >> $outfil
 echo "----------------------------------" >> $outfil
 echo "  " >> $outfil
 echo "  " >> $outfil
