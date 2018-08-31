@@ -1,12 +1,3 @@
-# tar_iso_centos7
-# Changelog
-
-## [Unreleased]
-
-
-## [1.0.0] - 2018-05-04
-
-
 # 安裝方法
 	1. mkdir /tmp/Hardening
 	2. 把 tar_iso_centos7.tar iso_chk_linux_centos7.sh create_iso_env_centos7.sh 放到 /tmp/Hardening
@@ -19,3 +10,15 @@
 	8. 切換到 root
 	9. 執行 /tmp/Hardening/iso_chk_linux_centos7.sh
 	10. 在 /tmp/Hardening/ 裡面會產生一個 xxx_iso_chk_linux.txt
+
+# tar_iso_centos7
+# Changelog
+
+## [Unreleased]
+
+## [1.0.1] - 2018-08-31
+
+## [1.0.0] - 2018-05-04
+
+
+
