@@ -306,6 +306,7 @@ done
 
 
 echo "6-2 確認只開啟必要之通訊埠及TCP/IP服務"  >> $outfil
+echo "由於 RHEL7 未啟用 xinetd，故使用 rpm 來檢查是否安裝套件。"
 echo "==================================" >> $outfil
 echo "檢查 rpm -q" >> $outfil
 check_rpm=(ftp telnet shell login exec talk ntalk imap pop2 pop3 finger auth)

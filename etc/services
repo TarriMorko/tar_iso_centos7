@@ -1224,8 +1224,8 @@ passgo          511/tcp                 # PassGo
 passgo          511/udp                 # PassGo
 videotex        516/tcp                 # videotex
 videotex        516/udp                 # videotex
-talk            517/tcp                 # like tenex link, but across
-ntalk           518/tcp                 #
+#talk            517/tcp                 # like tenex link, but across
+#ntalk           518/tcp                 #
 ulp             522/tcp                 # ULP
 ulp             522/udp                 # ULP
 ibm-db2         523/tcp                 # IBM-DB2
@@ -1251,7 +1251,7 @@ nmsp            537/tcp                 # Networked Media Streaming Protocol
 nmsp            537/udp                 # Networked Media Streaming Protocol
 apertus-ldp     539/tcp                 # Apertus Technologies Load Determination
 apertus-ldp     539/udp                 # Apertus Technologies Load Determination
-uucp            540/udp                 # uucpd
+#uucp            540/udp                 # uucpd
 uucp-rlogin     541/tcp                 # uucp-rlogin
 uucp-rlogin     541/udp                 # uucp-rlogin
 commerce        542/tcp                 # commerce
