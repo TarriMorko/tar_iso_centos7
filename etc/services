@@ -588,7 +588,7 @@ compressnet     2/udp                   # Management Utility
 discard         9/sctp                  # Discard
 discard         9/dccp                  # Discard SC:DISC
 ftp-data        20/sctp                 # FTP
-ftp             21/sctp                 # FTP
+#ftp             21/sctp                 # FTP
 ssh             22/sctp                 # SSH
 nsw-fe          27/tcp                  # NSW User System FE
 nsw-fe          27/udp                  # NSW User System FE
