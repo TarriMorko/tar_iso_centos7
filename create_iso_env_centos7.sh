@@ -6,7 +6,7 @@ export LC_ALL=POSIX
 
 
 ## Check OS Version
-grep -q "REDHAT_SUPPORT_PRODUCT_VERSION=\"7\"" /etc/os-release
+grep -q "REDHAT_SUPPORT_PRODUCT_VERSION=\"7..\"" /etc/os-release
 rc=$?
 
 if [ $rc -ne 0 ] ; then
